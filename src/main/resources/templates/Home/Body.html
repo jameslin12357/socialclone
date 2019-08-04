@@ -1,0 +1,15 @@
+<div th:fragment="body (rowsTL)" class="container">
+    <main role="main" class="pb-3">
+        <div th:each="row : ${rowsTL}" class="card m-auto mb-15" style="width: 25rem;">
+            <a th:href="@{'/posts/details/' + ${row[0]}}"><img th:src="@{${row[3]}}" class="card-img-top" alt="..."></a>
+            <div class="card-body">
+                <a th:href="@{'/posts/details/' + ${row[0]}}">
+                <h5 th:text="${row[1]}" class="card-title">...</h5>
+                </a>
+                <div class="mb-15"><a th:href="@{'/users/details/' + ${row[5]}}" th:text="${row[7]}" class="mr-3"></a><a th:href="@{'/topics/details/' + ${row[6]}}"><span th:text="${row[8]}"></span></a></div>
+                <p th:text="${row[2]}" class="card-text">...</p>
+                <span th:text="${row[4]}">...</span>
+            </div>
+        </div>
+    </main>
+</div>
