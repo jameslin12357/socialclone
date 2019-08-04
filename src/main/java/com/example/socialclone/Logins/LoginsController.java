@@ -47,7 +47,6 @@ public class LoginsController {
         HttpServletRequest requestF = Session.sessionSetup(request, response);
         Map<String, String> session = (Map<String, String>) requestF.getAttribute("session");
         if (session.get("isAuthenticated").equals("false")){
-
             String[] data = body.split("&");
             String email = data[0].split("=")[1];
             String password = data[1].split("=")[1];
@@ -61,11 +60,22 @@ public class LoginsController {
             System.out.println(body);
             System.out.println(email);
             System.out.println(password);
-            ArrayList<ArrayList<String>> rows = Oracle.Query("select id, email, password, username from users where email = " + email);
-            System.out.println(rows);
-            model.addAttribute("title", "Log in");
-            model.addAttribute("sess", session);
-            return "Logins/Create";
+            System.out.println("select id, email, password, username from users where email = '" + email + "'");
+            ArrayList<ArrayList<String>> rows = Oracle.Query("select id, email, password, username from users where email = '" + email + "'");
+
+            if (rows.isEmpty() || !(rows.get(0).get(2).equals(password))){
+                model.addAttribute("title", "Log in");
+                model.addAttribute("sess", session);
+                model.addAttribute("emailField", email);
+                return "Logins/Error";
+            } else {
+
+                return "redirect:/home";
+            }
+//            System.out.println(rows);
+//            model.addAttribute("title", "Log in");
+//            model.addAttribute("sess", session);
+//            return "Logins/Create";
 //            ArrayList<ArrayList<String>> rows = Oracle.Query("select p.id,p.name,p.description,p.imageurl,p.created,p.userid,p.topicid,u.username,t.name as topicname from posts p inner join users u on p.userid = u.id inner join topics t on p.topicid = t.id order by p.created desc");
 
 //            model.addAttribute("rows", rows);
