@@ -18,6 +18,107 @@
 
     </div>
 </div>
+
+
+    <div th:each="row : ${postsTL}"class="card m-auto mb-15" style="width: 25rem;">
+        <a th:href="@{'/posts/details/' + ${row[0]}}"><img th:src="@{${row[3]}}" class="card-img-top" alt="..."></a>
+        <div class="card-body">
+            <a th:href="@{'/posts/details/' + ${row[0]}}">
+                <h5 th:text="${row[1]}" class="card-title">...</h5>
+            </a>
+            <div class="mb-15"><a th:href="@{'/users/details/' + ${row[5]}}" th:text="${row[7]}" class="mr-3"></a><a th:href="@{'/topics/details/' + ${row[6]}}"><span th:text="${row[8]}"></span></a></div>
+            <p th:text="${row[2]}" class="card-text">...</p>
+            <span th:text="${row[4]}">...</span>
+        </div>
+    </div>
+
+    <div id="usertopicfollowingmodal" class="modal popupmodal" tabindex="-1" role="dialog">
+        <div class="modal-dialog mt-200" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Followed Topics</h5>
+                    <button id="usertopicfollowingmodaltoggleclose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="usertopicfollowingmodalbody" class="modal-body jsmodal">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="userfollowingmodal" class="modal popupmodal" tabindex="-1" role="dialog">
+        <div class="modal-dialog mt-200" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Followed Users</h5>
+                    <button id="userfollowingmodaltoggleclose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="userfollowingmodalbody" class="modal-body jsmodal">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="userfollowersmodal" class="modal popupmodal" tabindex="-1" role="dialog">
+        <div class="modal-dialog mt-200" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Followers</h5>
+                    <button id="userfollowersmodaltoggleclose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="userfollowersmodalbody" class="modal-body jsmodal">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="userlikesmodal" class="modal popupmodal" tabindex="-1" role="dialog">
+        <div class="modal-dialog mt-200" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Liked Posts</h5>
+                    <button id="userlikesmodaltoggleclose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="userlikesmodalbody" class="modal-body jsmodal">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="usercommentsmodal" class="modal popupmodal" tabindex="-1" role="dialog">
+        <div class="modal-dialog mt-200" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Comments</h5>
+                    <button id="usercommentsmodaltoggleclose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="usercommentsmodalbody" class="modal-body jsmodal">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/getusertopicfollowing.js"></script>
+    <script src="/js/getuserfollowing.js"></script>
+    <script src="/js/getuserfollowers.js"></script>
+    <script src="/js/getuserlikes.js"></script>
+    <script src="/js/getusercomments.js"></script>
+
+
 </div>
 
 <!--
