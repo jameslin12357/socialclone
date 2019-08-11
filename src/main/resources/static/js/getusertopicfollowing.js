@@ -17,11 +17,11 @@ usertopicfollowingmodaltoggleopen.addEventListener('click', function (e) {
             if (req.readyState == 4 && req.status == 200) {
                 var data = JSON.parse(req.responseText);
                 // loop over array and insert data into hidden modal and display modal when done
-                for (var i = 0; i < data["ds"].length; i++) {
+                for (var i = 0; i < data.length; i++) {
                     // pull needed values from selected fields (id, name, imageurl)
-                    var id = data["ds"][i]["ID"];
-                    var username = data["ds"][i]["NAME"];
-                    var imageurl = data["ds"][i]["IMAGEURL"];
+                    var id = data[i]["ID"];
+                    var username = data[i]["NAME"];
+                    var imageurl = data[i]["IMAGEURL"];
                     var div = document.createElement("div");
                     div.classList.add("media");
                     div.classList.add("mb-15");
