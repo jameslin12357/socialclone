@@ -1,0 +1,33 @@
+
+<div th:fragment="body (rowsTL,postsTL,postscountTL,topicscountTL,userfollowingcountTL,userfollowedcountTL,likescountTL,commentscountTL,followTL,statusFollowedTL)">
+<div th:each="row : ${rowsTL}" class="card m-auto mb-15 text-center" style="width: 25rem;">
+    <img th:src="@{${row[5]}}" id="profileImg" class="card-img-top" alt="...">
+    <div class="card-body">
+        <p th:text="${row[3]}" class="card-text"></p>
+        <p th:text="${row[4]}" class="card-text"></p>
+        <p th:text="@{'Joined ' + ${row[6]}}" class="card-text"></p>
+        <div class="mb-15"><span th:text="@{${postscountTL} + ' Posts'}" class="mr-3"></span><span th:text="@{${topicscountTL} + ' Topics'}" id="usertopicfollowingmodaltoggleopen" class="cursorPointer mr-3"></span><span th:text="@{${userfollowingcountTL} + ' Following'}" id="userfollowingmodaltoggleopen" class="cursorPointer mr-3"></span><span th:text="@{${userfollowedcountTL} + ' Followers'}" id="userfollowersmodaltoggleopen" class="cursorPointer mr-3"><span id="userfollowerscount"></span> Followers</span><span th:text="@{${likescountTL} + ' Likes'}" id="userlikesmodaltoggleopen" class="cursorPointer mr-3"></span><span th:text="@{${commentscountTL} + ' Comments'}" id="usercommentsmodaltoggleopen" class="cursorPointer mr-3"></span></div>
+
+
+
+        <a th:if="${sessTL.id} == ${rowsTL.get(0).get(0)}" th:href="@{'/users/edit/'+ ${rowsTL.get(0).get(0)}}" th:text="'Edit profile'" class="btn btn-light"></a>
+        <button th:if="${sessTL.id} == ${rowsTL.get(0).get(0)}" th:text="'Delete profile'" id="deleteprofilemodaltoggleopen" class="btn btn-danger"></button>
+
+
+        <button th:if="${followTL}" th:text="${statusFollowedTL}" id="userfollowunfollowbutton" class="btn btn-primary"></button>
+
+    </div>
+</div>
+</div>
+
+<!--
+<a th:href="@{'/posts/details/' + ${row[0]}}"><img th:src="@{${row[3]}}" class="card-img-top" alt="..."></a>
+<div class="card-body">
+    <a th:href="@{'/posts/details/' + ${row[0]}}">
+        <h5 th:text="${row[1]}" class="card-title">...</h5>
+    </a>
+    <div class="mb-15"><a th:href="@{'/users/details/' + ${row[5]}}" th:text="${row[7]}" class="mr-3"></a><a th:href="@{'/topics/details/' + ${row[6]}}"><span th:text="${row[8]}"></span></a></div>
+    <p th:text="${row[2]}" class="card-text">...</p>
+    <span th:text="${row[4]}">...</span>
+</div>
+-->

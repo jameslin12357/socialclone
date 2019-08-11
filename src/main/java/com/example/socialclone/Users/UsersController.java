@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +52,7 @@ public class UsersController {
             return "Users/Create";
         }
         else {
-            return "redirect:/";
+            return "redirect:/home";
         }
     }
 
@@ -87,10 +88,7 @@ public class UsersController {
             {
                 e.printStackTrace();
             }
-            System.out.println(body);
-            System.out.println(email);
-            System.out.println(password);
-            System.out.println(username);
+
             //ArrayList<ArrayList<String>> rows = Oracle.Query("select id, email, password, username from users where email = '" + email + "'");
             ArrayList<String> errors = new ArrayList<String>();
 
@@ -110,53 +108,73 @@ public class UsersController {
                 errors.add("passwordshort");
             }
             if (!errors.isEmpty()){
-
-                if (errors.contains("emailinvalid")){
-                    System.out.println("W1");
-                }
-                if (errors.contains("emaile")){
-                    System.out.println("W2");
-                }
                 model.addAttribute("title", "Register");
                 model.addAttribute("sess", session);
                 model.addAttribute("emailField", email);
                 model.addAttribute("usernameField", username);
                 model.addAttribute("errors", errors);
-
                 return "Users/Error";
             } else {
-                
-            }
-
-           /* if (rows.isEmpty() || !(rows.get(0).get(2).equals(password))){
+                email = email.trim();
+                password = password.trim();
+                username = username.trim();
+                ArrayList<ArrayList<String>> rows = Oracle.Query("begin insert into users (email, password, username) values ('" + email + "','" + password + "','" + username + "');commit;end;");
                 model.addAttribute("title", "Log in");
                 model.addAttribute("sess", session);
-                model.addAttribute("emailField", email);
-                return "Logins/Error";
-            } else {
-                var cookies = request.getCookies();
-                String cookieValue = cookies[0].getValue();
-                Jedis jedis = new Jedis("localhost");
-                Map<String, String> sessionUpdated = new HashMap<String, String>();
-                sessionUpdated.put("isAuthenticated", "true");
-                sessionUpdated.put("id", rows.get(0).get(0));
-                sessionUpdated.put("email", rows.get(0).get(1));
-                sessionUpdated.put("username", rows.get(0).get(3));
-                jedis.hmset(cookieValue, sessionUpdated);
-                return "redirect:/home";
-            }*/
-//            System.out.println(rows);
-//            model.addAttribute("title", "Log in");
-//            model.addAttribute("sess", session);
-//            return "Logins/Create";
-//            ArrayList<ArrayList<String>> rows = Oracle.Query("select p.id,p.name,p.description,p.imageurl,p.created,p.userid,p.topicid,u.username,t.name as topicname from posts p inner join users u on p.userid = u.id inner join topics t on p.topicid = t.id order by p.created desc");
+                return "Logins/Success";
+            }
 
-//            model.addAttribute("rows", rows);
         }
         else {
-            return "redirect:/";
+            return "redirect:/home";
         }
     }
 
-}
+    @GetMapping("/users/details/{id}")
+    public String details(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable Long id) {
+        // call function to setup session
+        HttpServletRequest requestF = Session.sessionSetup(request, response);
+        Map<String, String> session = (Map<String, String>) requestF.getAttribute("session");
+        System.out.println("select * from users where id = '" + id + "';");
+        ArrayList<ArrayList<String>> rows = Oracle.Query("select * from users where id = '" + id + "'");
+        ArrayList<ArrayList<String>> posts = Oracle.Query("select p.id,p.name,p.description,p.imageurl,p.created,p.userid,p.topicid,u.username,t.name as topicname from posts p inner join users u on p.userid = u.id inner join topics t on p.topicid = t.id where userid = '" + id + "' order by created desc");
+        String postscount = Oracle.Query("select count(*) as count from posts where userid = '" + id + "'").get(0).get(0);
+        String topicscount = Oracle.Query("select count(*) as count from topicfollowing where following = '" + id + "'").get(0).get(0);
+        String userfollowingcount = Oracle.Query("select count(*) as count from userfollowing where following = '" + id + "'").get(0).get(0);
+        String userfollowedcount = Oracle.Query("select count(*) as count from userfollowing where followed = '" + id + "'").get(0).get(0);
+        String likescount = Oracle.Query("select count(*) as count from liks where lik = '" + id + "'").get(0).get(0);
+        String commentscount = Oracle.Query("select count(*) as count from comments where userid = '" + id + "'").get(0).get(0);
 
+
+
+        if (rows.isEmpty()){
+            model.addAttribute("title", "404");
+            model.addAttribute("sess", session);
+            return "Errors/404";
+        } else {
+            model.addAttribute("title", "Profile");
+            model.addAttribute("sess", session);
+            model.addAttribute("rows", rows);
+            model.addAttribute("posts", posts);
+            model.addAttribute("postscount", postscount);
+            model.addAttribute("topicscount", topicscount);
+            model.addAttribute("userfollowingcount", userfollowingcount);
+            model.addAttribute("userfollowedcount", userfollowedcount);
+            model.addAttribute("likescount", likescount);
+            model.addAttribute("commentscount", commentscount);
+            if (session.get("isAuthenticated").equals("true") && !(session.get("id").equals(rows.get(0).get(0)))){
+                model.addAttribute("follow", true);
+                String statusFollowed = Oracle.Query("select count(*) as count from userfollowing where following = '" + session.get("id") + "' and followed = '" + rows.get(0).get(0) + "'").get(0).get(0);
+                if (statusFollowed.equals("0")){
+                    model.addAttribute("statusFollowed","Follow");
+                } else {
+                    model.addAttribute("statusFollowed","Unfollow");
+                }
+            }
+            return "Users/Details";
+        }
+
+
+    }
+
+}

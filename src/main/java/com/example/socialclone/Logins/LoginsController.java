@@ -37,7 +37,7 @@ public class LoginsController {
             return "Logins/Create";
         }
         else {
-            return "redirect:/";
+            return "redirect:/home";
         }
     }
 
@@ -89,7 +89,7 @@ public class LoginsController {
 //            model.addAttribute("rows", rows);
         }
         else {
-            return "redirect:/";
+            return "redirect:/home";
         }
     }
 
