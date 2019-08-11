@@ -1,0 +1,40 @@
+
+
+
+<div th:fragment="body" class="row">
+    <div class="col-md-4 offset-md-4">
+        <form method="post" action="/users/create">
+
+            <h3 class="text-center">Register</h3>
+            <div class="form-group">
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" required >
+            </div>
+
+          <!--  <div class="alert alert-danger @ViewData["5"]">Email is empty.</div>
+
+    <div class="alert alert-danger @ViewData["6"]">Email is invalid.</div>-->
+
+<div class="form-group">
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password" required>
+</div>
+<!--
+
+<div class="alert alert-danger @ViewData["7"]">Password is empty.</div>
+
+<div class="alert alert-danger @ViewData["8"]">Password is short.</div>
+-->
+
+<div class="form-group">
+    <input type="text" class="form-control" id="exampleUsername1" placeholder="Username" name="username" required>
+</div>
+
+<!--
+<div class="alert alert-danger @ViewData["9"]">Username is empty.</div>
+-->
+
+<button type="submit" class="btn btn-primary btn-block">Submit</button>
+</form>
+</div>
+</div>
+
+

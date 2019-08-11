@@ -36,7 +36,7 @@
 
 
                     <li th:if="${sessTL.isAuthenticated}" class="nav-item">
-                        <a id="currentuser" class="nav-link text-dark" th:href="/users/${sessTL.id}" th:text="${sessTL.username}">...</a>
+                        <a id="currentuser" class="nav-link text-dark" th:href="@{'/users/'+${sessTL.id}}" th:text="${sessTL.username}">...</a>
                     </li>
                     <li th:if="${sessTL.isAuthenticated}" class="nav-item">
                         <a class="nav-link text-dark" href="/posts/create">Create</a>

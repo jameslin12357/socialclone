@@ -36,7 +36,7 @@ public class HomeController {
             model.addAttribute("rows", rows);
         }
      else {
-            ArrayList<ArrayList<String>> rows = Oracle.Query("select p.id,p.name,p.description,p.imageurl,p.created,p.userid,p.topicid,u.username,t.name as topicname from posts p inner join users u on p.userid = u.id inner join topics t on p.topicid = t.id where topicid in (select followed from topicfollowing where following = " + session.get("id") + " order by created desc");
+            ArrayList<ArrayList<String>> rows = Oracle.Query("select p.id,p.name,p.description,p.imageurl,p.created,p.userid,p.topicid,u.username,t.name as topicname from posts p inner join users u on p.userid = u.id inner join topics t on p.topicid = t.id where p.topicid in (select followed from topicfollowing where following = " + session.get("id") + ") order by created desc");
             model.addAttribute("title", "Home");
             model.addAttribute("sess", session);
             model.addAttribute("rows", rows);
